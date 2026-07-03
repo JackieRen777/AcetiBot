@@ -3,10 +3,18 @@ services:
     name: acetibot-api
     runtime: python
     plan: free
+    autoDeployTrigger: commit
     buildCommand: pip install -r requirements.txt
     preDeployCommand: python ingest.py
     startCommand: uvicorn api:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
+    buildFilter:
+      paths:
+        - "*.py"
+        - "requirements.txt"
+        - "data/standards/**"
+        - "render.yaml"
+        - ".env.example"
     envVars:
       - key: SILICONFLOW_API_KEY
         sync: false
@@ -30,20 +38,3 @@ services:
         value: "900"
       - key: RAG_MAX_CONTEXT_CHARS
         value: "2600"
-
-  - type: web
-    name: acetibot-web
-    runtime: static
-    rootDir: frontend
-    buildCommand: npm install && npm run build
-    staticPublishPath: frontend/dist
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
-    envVars:
-      - key: VITE_API_HOST
-        fromService:
-          name: acetibot-api
-          type: web
-          envVarKey: RENDER_EXTERNAL_HOSTNAME
