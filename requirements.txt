@@ -1,0 +1,15 @@
+llama-index-core
+llama-index-vector-stores-chroma
+llama-index-embeddings-huggingface
+llama-index-readers-file
+chromadb
+python-dotenv
+pandas
+numpy
+openpyxl
+fastapi
+requests
+python-multipart
+uvicorn[standard]
+pdfplumber
+paddleocr

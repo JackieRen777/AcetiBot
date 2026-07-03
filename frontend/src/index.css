@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,300;0,400;1,300&family=Inter:wght@400;500&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; background: #f5f5f5; }
+#root { width: 100%; height: 100vh; }
+
+@keyframes orb-1 {
+  0%,100% { transform: translate(var(--mx,0px), var(--my,0px)) scale(1); }
+  33%      { transform: translate(calc(var(--mx,0px) + 40px), calc(var(--my,0px) - 30px)) scale(1.08); }
+  66%      { transform: translate(calc(var(--mx,0px) - 25px), calc(var(--my,0px) + 40px)) scale(0.93); }
+}
+@keyframes orb-2 {
+  0%,100% { transform: translate(var(--mx2,0px), var(--my2,0px)) scale(1); }
+  40%     { transform: translate(calc(var(--mx2,0px) - 35px), calc(var(--my2,0px) + 25px)) scale(1.06); }
+  75%     { transform: translate(calc(var(--mx2,0px) + 30px), calc(var(--my2,0px) - 35px)) scale(0.94); }
+}
+@keyframes orb-3 {
+  0%,100% { transform: translate(var(--mx3,0px), var(--my3,0px)) scale(1); }
+  50%     { transform: translate(calc(var(--mx3,0px) + 20px), calc(var(--my3,0px) + 30px)) scale(1.1); }
+}
+@keyframes orb-4 {
+  0%,100% { transform: translate(var(--mx4,0px), var(--my4,0px)) scale(1); }
+  45%     { transform: translate(calc(var(--mx4,0px) - 30px), calc(var(--my4,0px) - 20px)) scale(0.92); }
+}
+
+.orb-1 { animation: orb-1 12s ease-in-out infinite; transition: --mx 0.8s ease, --my 0.8s ease; }
+.orb-2 { animation: orb-2 15s ease-in-out infinite; transition: --mx2 0.8s ease, --my2 0.8s ease; }
+.orb-3 { animation: orb-3 10s ease-in-out infinite; transition: --mx3 0.8s ease, --my3 0.8s ease; }
+.orb-4 { animation: orb-4 18s ease-in-out infinite; transition: --mx4 0.8s ease, --my4 0.8s ease; }

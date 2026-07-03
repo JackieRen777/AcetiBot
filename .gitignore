@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+chroma_db/
+
+# 数据文件
+# 保留公开演示资料 data/standards/，其余本地资料默认不上传
+data/consumer/
+data/papers/
+data/patents/
+data/sensor/
+
+# Node.js
+frontend/node_modules/
+frontend/dist/
+
+# macOS
+.DS_Store
+
+# PaddleOCR 模型缓存
+~/.paddlex/
+
+# Local tooling
+.kiro/
