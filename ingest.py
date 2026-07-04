@@ -10,6 +10,12 @@ from embeddings import SiliconFlowEmbedding
 
 load_dotenv()
 Settings.embed_model = SiliconFlowEmbedding(api_key=os.getenv("SILICONFLOW_API_KEY"))
+ENABLE_OCR = os.getenv("INGEST_ENABLE_OCR", "1").strip().lower() not in {"0", "false", "no"}
+INCLUDE_DIRS = {
+    item.strip()
+    for item in os.getenv("INGEST_INCLUDE_DIRS", "").split(",")
+    if item.strip()
+}
 
 FOLDER_TYPE = {
     "standards": "标准", "patents": "专利", "papers": "文献",
@@ -32,6 +38,8 @@ def get_ocr():
 
 def ocr_page(page) -> str:
     """对单个 pdfplumber 页面做 OCR，返回文本（PaddleOCR 3.x）"""
+    if not ENABLE_OCR:
+        return ""
     try:
         img = page.to_image(resolution=200).original
         arr = np.array(img)
@@ -145,8 +153,11 @@ def build_index(data_dir: str = "./data"):
     ctx    = StorageContext.from_defaults(vector_store=store)
 
     existing   = get_existing_sources(col)
-    all_files  = [f for f in Path(data_dir).rglob("*") if f.suffix in
-                  (".pdf", ".xlsx", ".xls", ".txt", ".md")]
+    all_files  = [
+        f for f in Path(data_dir).rglob("*")
+        if f.suffix in (".pdf", ".xlsx", ".xls", ".txt", ".md")
+        and (not INCLUDE_DIRS or f.parent.name in INCLUDE_DIRS)
+    ]
     new_files  = [f for f in all_files if f.name not in existing]
 
     log = {"ok": [], "ocr": [], "empty": [], "skip": [], "fail": []}
@@ -156,7 +167,9 @@ def build_index(data_dir: str = "./data"):
         print(f"✅ 无新文档，知识库已是最新（跳过 {len(log['skip'])} 个文件）")
         return
 
-    print(f"📥 发现 {len(new_files)} 个新文档，开始入库…\n")
+    scope_text = f"（目录过滤：{', '.join(sorted(INCLUDE_DIRS))}）" if INCLUDE_DIRS else ""
+    ocr_text = "开启" if ENABLE_OCR else "关闭"
+    print(f"📥 发现 {len(new_files)} 个新文档，开始入库…{scope_text} OCR={ocr_text}\n")
     all_docs = []
 
     for f in new_files:
