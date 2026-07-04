@@ -17,10 +17,20 @@ _KEYWORD_STOPWORDS = {
     "一个", "一种", "这个", "那个", "我们", "你们", "他们", "用户", "建议", "说明", "分析",
     "食醋", "食品", "国标", "国家标准",
 }
+_DATA_TERMS = (
+    "csv", "excel", "xlsx", "xls",
+    "电子舌", "电子鼻", "感官数据", "实验数据", "检测数据",
+    "样本数据", "测定数据", "上传数据", "表格数据",
+)
+_DATA_ACTION_TERMS = (
+    "结合", "基于", "根据", "按", "参照", "利用", "用", "依据",
+    "分析", "判断", "评估", "诊断", "推荐", "建议", "优化", "改良",
+    "测算", "计算", "对比",
+)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],   # Vercel 部署后改为具体域名
+    allow_origins=["*"],   # 绑定正式域名后改为明确白名单
     allow_methods=["POST", "GET"],
     allow_headers=["*"],
 )
@@ -61,7 +71,43 @@ async def parse_query_request(request: Request) -> tuple[str, dict | None, str |
     if not question:
         raise ValueError("请输入问题，或至少上传一个可解析的文件。")
 
+    _validate_required_uploads(question, extra_context)
     return question, filters, extra_context
+
+
+def _contains_any(text: str, terms: tuple[str, ...]) -> bool:
+    lowered = text.lower()
+    return any(term.lower() in lowered for term in terms)
+
+
+def _requires_uploaded_data(question: str) -> bool:
+    normalized = question.strip().lower()
+    if not normalized:
+        return False
+
+    mentions_data = _contains_any(normalized, _DATA_TERMS)
+    mentions_action = _contains_any(normalized, _DATA_ACTION_TERMS)
+    mentions_upload = "上传" in normalized
+
+    if not mentions_data:
+        return False
+
+    if mentions_upload:
+        return True
+
+    return mentions_action
+
+
+def _validate_required_uploads(question: str, extra_context: str | None) -> None:
+    if extra_context:
+        return
+
+    if _requires_uploaded_data(question):
+        raise ValueError(
+            "当前问题明确要求结合电子舌/CSV/Excel等实测数据，但本次请求未检测到上传文件。"
+            "为保证可溯源和准确性，系统不会假设不存在的数据。"
+            "请先上传对应文件，或改为“仅基于知识库给出通用建议”。"
+        )
 
 
 def _normalize_source_text(text: str) -> str:

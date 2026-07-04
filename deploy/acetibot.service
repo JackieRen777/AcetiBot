@@ -1,0 +1,16 @@
+[Unit]
+Description=AcetiBot Backend Service
+After=network.target
+
+[Service]
+User=root
+WorkingDirectory=/www/wwwroot/AcetiBot
+ExecStart=/www/wwwroot/AcetiBot/venv/bin/uvicorn api:app --host 127.0.0.1 --port 8013
+Restart=always
+RestartSec=5
+Environment="PATH=/www/wwwroot/AcetiBot/venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin"
+StandardOutput=append:/www/wwwlogs/acetibot_backend.log
+StandardError=append:/www/wwwlogs/acetibot_backend.log
+
+[Install]
+WantedBy=multi-user.target

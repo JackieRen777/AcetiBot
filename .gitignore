@@ -10,7 +10,7 @@ chroma_db/
 data/consumer/
 data/papers/
 data/patents/
-data/sensor/
+data/flavor/
 
 # Node.js
 frontend/node_modules/

@@ -13,7 +13,9 @@ Settings.embed_model = SiliconFlowEmbedding(api_key=os.getenv("SILICONFLOW_API_K
 
 FOLDER_TYPE = {
     "standards": "标准", "patents": "专利", "papers": "文献",
-    "consumer": "消费者评价", "sensor": "感官数据",
+    "consumer": "消费者评价",
+    "flavor": "风味文献",
+    "sensor": "风味文献",
 }
 
 # ---------- OCR ----------

@@ -40,4 +40,6 @@ git push origin main
 
 echo
 echo "Release complete."
-echo "If Vercel and Render are already connected, this push will trigger both deployments."
+echo "GitHub push complete."
+echo "If you also want to update the Alibaba Cloud server, run:"
+echo "./scripts/deploy_aliyun.sh"
