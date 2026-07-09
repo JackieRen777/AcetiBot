@@ -1,0 +1,28 @@
+{
+  "generated_at": "2026-07-08T09:07:12",
+  "scope": "papers",
+  "paper_files_on_disk": 930,
+  "clean_report_rows": 930,
+  "excluded_removed_rows": 11,
+  "status_counts": {
+    "ingested": 930
+  },
+  "quality_counts": {
+    "pass": 930
+  },
+  "parse_status_counts": {
+    "ok": 793,
+    "ocr": 137
+  },
+  "ocr_docs": 137,
+  "ocr_pages": 1468,
+  "total_chars": 53334566,
+  "table_fact_count": 57258,
+  "table_review_count": 1236,
+  "avg_valid_char_ratio": 0.9699,
+  "avg_garble_score": 0.0305,
+  "notes": [
+    "This clean report excludes 11 deleted low-value paper rows from the earlier raw parse report.",
+    "Original parse_report.csv is preserved as an audit snapshot."
+  ]
+}

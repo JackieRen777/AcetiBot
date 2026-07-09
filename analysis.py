@@ -1,4 +1,4 @@
-"""轻量分析层：地域识别、感官数据摘要、标准核查提示。"""
+"""轻量分析层：按需展示地域识别与感官数据摘要。"""
 import re
 
 
@@ -79,42 +79,6 @@ def summarize_sensor_context(extra_context: str | None) -> dict | None:
         "tone": "success",
     }
 
-
-def build_compliance_note(question: str, nodes) -> dict:
-    sources = [((node.metadata or {}).get("source") or "") for node in nodes]
-    items = []
-
-    if any("GB2719" in source for source in sources):
-        items.append("已关联 GB2719-2018《食醋》作为基础理化与分类约束。")
-    if any("GB18187" in source for source in sources):
-        items.append("已关联 GB/T 18187 作为酿造食醋相关工艺/产品标准依据。")
-    if any("GB7718" in source for source in sources):
-        items.append("已关联 GB 7718，可用于后续标签文案与标示核查。")
-    if any("GB28050" in source for source in sources):
-        items.append("已关联 GB 28050，可用于后续营养成分表标示核查。")
-
-    lowered = question.lower()
-    if "甜醋" in question and any("GB2719" in source for source in sources):
-        items.append("甜醋总酸硬约束：≥ 2.5 g/100mL。")
-    elif any(keyword in lowered for keyword in ["酸度", "总酸", "酸含量"]) and any("GB2719" in source for source in sources):
-        items.append("普通食醋总酸硬约束：≥ 3.5 g/100mL；甜醋总酸：≥ 2.5 g/100mL。")
-
-    if items:
-        return {
-            "title": "标准核查",
-            "body": "本轮回答已自动挂接到现有标准来源，可作为建议边界与后续人工复核起点。",
-            "items": items,
-            "tone": "warning",
-        }
-
-    return {
-        "title": "标准核查",
-        "body": "当前回答暂未命中明确的标准型证据。若后续给出具体酸度、标签或工艺参数，建议继续追加标准核查。",
-        "items": [],
-        "tone": "neutral",
-    }
-
-
 def build_analysis_cards(question: str, nodes, extra_context: str | None) -> list[dict]:
     cards = []
     region_card = detect_region(question)
@@ -124,6 +88,4 @@ def build_analysis_cards(question: str, nodes, extra_context: str | None) -> lis
     sensor_card = summarize_sensor_context(extra_context)
     if sensor_card:
         cards.append(sensor_card)
-
-    cards.append(build_compliance_note(question, nodes))
     return cards

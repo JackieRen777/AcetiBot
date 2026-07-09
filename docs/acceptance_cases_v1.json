@@ -1,0 +1,91 @@
+[
+  {
+    "id": "consumer_top_params",
+    "question": "消费者评价里最关注哪些参数？",
+    "expected_route": "consumer_insight",
+    "should_refuse": false,
+    "expected_source_contains": "parameter_statistics.csv",
+    "expected_doc_type": "消费者评价",
+    "expected_chunk_kind": "table_fact",
+    "notes": "应优先命中消费者统计表格事实。"
+  },
+  {
+    "id": "standard_total_acid_requirement",
+    "question": "酿造食醋总酸含量要求是什么？",
+    "expected_route": "standard_compliance",
+    "should_refuse": false,
+    "expected_doc_type": "标准",
+    "check_answer_citations": true,
+    "expected_citation_passed": true,
+    "expected_consistency_passed": true,
+    "expected_answer_contains": ["3.5", "g/100mL"],
+    "notes": "应进入标准子库，不应靠常识回答。"
+  },
+  {
+    "id": "standard_zhenjiang_vs_sweet_total_acid",
+    "question": "镇江香醋与甜醋的总酸标准差异是什么？",
+    "expected_route": "standard_compliance",
+    "should_refuse": false,
+    "expected_doc_type": "标准",
+    "check_answer_citations": true,
+    "expected_citation_passed": true,
+    "expected_consistency_passed": true,
+    "expected_answer_contains": ["镇江香醋", "甜醋", "总酸"],
+    "notes": "标准差异问题必须优先命中标准子库，不能退化为外部查询建议。"
+  },
+  {
+    "id": "flavor_metric_should_refuse_when_not_grounded",
+    "question": "哪组样品总酸更高？",
+    "expected_route": "flavor_mechanism",
+    "should_refuse": true,
+    "notes": "当前代表性小库里该问题还没有稳定命中总酸表格证据，应触发拒答保护。"
+  },
+  {
+    "id": "formula_process_layered_answer",
+    "question": "如何优化配方让酸香更协调，同时兼顾合规和消费者接受度？",
+    "expected_route": "formula_process",
+    "should_refuse": false,
+    "check_answer_citations": true,
+    "expected_citation_passed": true,
+    "expected_consistency_passed": true,
+    "notes": "当前允许作答，但仍需继续优化主证据排序。"
+  },
+  {
+    "id": "patent_route_basic",
+    "question": "相关专利里有没有能缩短发酵周期并改善香味的工艺？",
+    "expected_route": "patent_process",
+    "should_refuse": false,
+    "expected_doc_type": "专利",
+    "notes": "应优先命中专利实施例或工艺段落。"
+  },
+  {
+    "id": "paper_table_metric_grounded",
+    "question": "请根据优质苹果醋及其风味物质的研究，比较不同试验号的总酸含量。",
+    "expected_route": "flavor_mechanism",
+    "should_refuse": false,
+    "expected_source_contains": "优质苹果醋及其风味物质的研究_刘青.pdf",
+    "expected_doc_type": "文献",
+    "expected_chunk_kind": "table_fact",
+    "expected_aggregation_mode": "compare",
+    "expected_aggregation_source_contains": "优质苹果醋及其风味物质的研究_刘青.pdf",
+    "expected_winner_identifier": "9",
+    "notes": "论文里的试验号比较问题应优先命中表格事实，而不是只命中段落摘要。"
+  },
+  {
+    "id": "paper_table_highest_trial",
+    "question": "请根据优质苹果醋及其风味物质的研究，哪组试验的总酸含量最高？",
+    "expected_route": "flavor_mechanism",
+    "should_refuse": false,
+    "expected_source_contains": "优质苹果醋及其风味物质的研究_刘青.pdf",
+    "expected_doc_type": "文献",
+    "expected_chunk_kind": "table_fact",
+    "expected_aggregation_mode": "max",
+    "expected_aggregation_source_contains": "优质苹果醋及其风味物质的研究_刘青.pdf",
+    "expected_winner_identifier": "9",
+    "check_answer_citations": true,
+    "expected_citation_passed": true,
+    "expected_consistency_passed": true,
+    "expected_answer_contains": ["试验号9", "51.6"],
+    "notes": "论文中的最高值判断必须优先落在可溯源表格证据上。"
+  }
+]

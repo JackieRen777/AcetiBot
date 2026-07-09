@@ -38,10 +38,6 @@ export default function Landing() {
       <nav className="relative flex items-center justify-between px-12 h-16">
         {/* Logo mark */}
         <div className="flex items-center gap-2">
-          <div className="flex gap-[3px]">
-            <div className="w-[3px] h-[18px] bg-[#292524] rounded-[2px]" />
-            <div className="w-[3px] h-[18px] bg-[#292524] rounded-[2px]" />
-          </div>
           <span className="text-sm font-medium tracking-tight">AcetiBot</span>
         </div>
 
@@ -56,11 +52,7 @@ export default function Landing() {
           ))}
         </div>
 
-        {/* CTA */}
-        <button onClick={() => nav('/chat')}
-          className="bg-[#292524] text-white text-sm font-medium px-5 py-2 rounded-full hover:bg-[#0c0a09] transition-colors">
-          开始问询
-        </button>
+        {/* CTA — removed (duplicate with hero button) */}
       </nav>
 
       {/* Hero — full viewport */}
@@ -70,24 +62,20 @@ export default function Landing() {
           智醯 AcetiBot
         </h1>
         <p className="text-xl text-[#4e4e4e] max-w-xl mx-auto mb-10 leading-relaxed">
-          食醋配方优化智能体——融合电子鼻／舌感官数据与垂直领域知识库，
-          生成有文献溯源的配方改良建议
+          专注食醋垂直领域的配方辅助系统——基于工艺论文、企业专利与国家标准构建的知识库，每一条配方与工艺问题都附有可溯源的文献依据。
         </p>
-        <div className="flex items-center justify-center gap-4">
+        <div className="flex items-center justify-center">
           <button onClick={() => nav('/chat')}
             className="flex items-center gap-2 bg-[#292524] text-white px-8 py-3.5 rounded-full text-sm font-medium hover:bg-[#0c0a09] transition-colors">
-            开始问询 <ArrowRight size={15} />
-          </button>
-          <button className="px-8 py-3.5 rounded-full text-sm border border-[#e7e5e4] text-[#4e4e4e] hover:border-[#292524] transition-colors">
-            查看演示
+            Try now！ <ArrowRight size={15} />
           </button>
         </div>
       </section>
 
       {/* 产品介绍 */}
-      <section id="产品介绍" className="relative max-w-4xl mx-auto px-8 py-24">
+      <section id="产品介绍" className="relative max-w-4xl mx-auto px-8 py-24 text-center">
         <h2 className="font-display text-4xl font-light tracking-tight mb-6">产品介绍</h2>
-        <p className="text-lg text-[#4e4e4e] leading-relaxed max-w-2xl">
+        <p className="text-lg text-[#4e4e4e] leading-relaxed max-w-2xl mx-auto">
           智醯（AcetiBot）是面向食醋酿造企业的配方优化智能体，融合食品科学、统计学与人工智能三大学科。
           系统以电子鼻、电子舌感官数据为输入，结合国家标准、企业专利与学术文献构建的垂直领域知识库，
           借助 RAG 架构输出有文献溯源的工艺参数建议与配方改良方案。
@@ -134,9 +122,8 @@ export default function Landing() {
       </section>
 
       {/* Footer */}
-      <footer className="relative border-t border-[#e7e5e4] px-12 py-6 flex justify-between text-xs text-[#a8a29e]">
+      <footer className="relative border-t border-[#e7e5e4] px-12 py-6 flex justify-center text-xs text-[#a8a29e]">
         <span>智醯 AcetiBot © 2026</span>
-        <span>挑战杯揭榜挂帅 · 恒顺醋业命题</span>
       </footer>
     </div>
   )

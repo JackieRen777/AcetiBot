@@ -1,7 +1,7 @@
-import { useState, useRef } from 'react'
+import { useRef, useState } from 'react'
 import { Paperclip, Send, X } from 'lucide-react'
 
-export default function ChatInput({ onSend, loading }) {
+export default function ChatInput({ onSend, loading, helperText = '支持补充 PDF / Excel / CSV 资料' }) {
   const [text, setText] = useState('')
   const [file, setFile] = useState(null)
   const fileRef = useRef(null)
@@ -40,7 +40,7 @@ export default function ChatInput({ onSend, loading }) {
         {/* Textarea */}
         <textarea
           className="flex-1 resize-none bg-transparent outline-none text-sm text-ink placeholder-muted max-h-40 leading-relaxed"
-          placeholder="描述您的配方需求，或询问工艺问题…"
+          placeholder="给 AcetiBot 发送消息"
           rows={1}
           value={text}
           onChange={e => setText(e.target.value)}
@@ -55,7 +55,7 @@ export default function ChatInput({ onSend, loading }) {
           <Send size={15} />
         </button>
       </div>
-      <p className="text-xs text-muted text-center">支持上传 CSV（感官数据）· PDF · Excel</p>
+      <p className="text-center text-xs text-muted">{helperText}</p>
     </div>
   )
 }

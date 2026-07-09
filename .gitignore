@@ -5,6 +5,12 @@ __pycache__/
 .env
 chroma_db/
 
+# ChromaDB 备份和中间产物
+chroma_db_backup*/
+chroma_db_broken*/
+parsed_docs/
+parse_report.csv
+
 # 数据文件
 # 保留公开演示资料 data/standards/，其余本地资料默认不上传
 data/consumer/
